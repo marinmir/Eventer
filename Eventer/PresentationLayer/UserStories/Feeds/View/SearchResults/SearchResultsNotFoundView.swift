@@ -20,11 +20,15 @@ class SearchResultsNotFoundView: UIView {
     }
     
     private func setSubviews() {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(container)
+        
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.text = NSLocalizedString("Sorry, not found", comment: "")
         message.textColor = Colors.darkViolet
-        message.font = .systemFont(ofSize: 30)
+        message.font = .systemFont(ofSize: 25)
         addSubview(message)
         
         let sadSmile = UIImageView(image: UIImage(named: "SadSmile"))
@@ -32,10 +36,15 @@ class SearchResultsNotFoundView: UIView {
         addSubview(sadSmile)
         
         NSLayoutConstraint.activate([
-            message.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -50),
+            container.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            container.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            container.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            
+            message.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -25),
             message.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            sadSmile.centerYAnchor.constraint(equalTo: centerYAnchor),
+            sadSmile.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 25),
             sadSmile.centerXAnchor.constraint(equalTo: centerXAnchor),
             sadSmile.widthAnchor.constraint(equalToConstant: 50),
             sadSmile.heightAnchor.constraint(equalToConstant: 50),
