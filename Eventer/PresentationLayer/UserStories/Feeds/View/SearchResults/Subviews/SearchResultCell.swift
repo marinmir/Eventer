@@ -77,12 +77,12 @@ class SearchResultCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             titleImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            titleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             titleImage.heightAnchor.constraint(equalToConstant: 90),
             titleImage.widthAnchor.constraint(equalToConstant: 90),
             
             title.leadingAnchor.constraint(equalTo: titleImage.trailingAnchor, constant: 8),
-            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             title.centerYAnchor.constraint(equalTo: titleImage.centerYAnchor, constant: -20),
             title.heightAnchor.constraint(equalToConstant: 20),
             
@@ -94,13 +94,12 @@ class SearchResultCell: UITableViewCell {
             place.leadingAnchor.constraint(equalTo: cost.trailingAnchor, constant: 2),
             place.centerYAnchor.constraint(equalTo: cost.centerYAnchor),
             place.heightAnchor.constraint(equalToConstant: 18),
-            //place.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             place.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
             
             date.leadingAnchor.constraint(equalTo: titleImage.trailingAnchor, constant: 8),
             date.centerYAnchor.constraint(equalTo: titleImage.centerYAnchor, constant: 18),
             date.heightAnchor.constraint(equalToConstant: 18),
-            date.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            date.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
     

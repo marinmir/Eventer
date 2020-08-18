@@ -9,13 +9,11 @@
 import UIKit
 
 class ThisWeekView: UIView {
-    // MARK: - Properties
-    let title = UILabel()
-
     // MARK: - Public methods
     init() {
         super.init(frame: CGRect.zero)
         
+        let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = NSLocalizedString("This week", comment: "")
         title.font = .boldSystemFont(ofSize: TitlesConstants.font)

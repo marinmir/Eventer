@@ -18,7 +18,6 @@ class TagsCell: UITableViewCell {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
-        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
     }()
@@ -33,11 +32,6 @@ class TagsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    func configure(with events: [Event]) {
-//        self.events = events
-//        tagsCollectionView.reloadData()
-//    }
     
     // MARK: - Private methods
     private func setAppearance() {
@@ -84,11 +78,10 @@ extension TagsCell: UICollectionViewDelegate, UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension TagsCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // dataArary is the managing array for your UICollectionView.
-          let item = tags[indexPath.row]
+        let item = tags[indexPath.row]
         let itemSize = item.name.size(withAttributes: [
-              NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)
-          ])
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)
+        ])
         let size =  CGSize(width: itemSize.width + 63, height: itemSize.height + 20)
         return size
     }

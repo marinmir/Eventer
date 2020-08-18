@@ -10,7 +10,7 @@ import UIKit
 
 class VisitorsPreview: UIStackView {
     // MARK: - Properties
-    private let  count = UILabel()
+    private let count = UILabel()
     private var profileImages: [UIImage]!
     private let profilesStack = UIStackView()
     

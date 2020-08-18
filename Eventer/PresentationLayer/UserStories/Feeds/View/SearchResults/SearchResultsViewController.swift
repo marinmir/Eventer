@@ -10,8 +10,6 @@ import UIKit
 
 class SearchResultsViewController: UIViewController {
     // MARK: - Properties
-    var output: SearchResultsViewOutput!
-    
     private var results: [Event] = []
     
     private var _view: SearchResultsView {
@@ -23,8 +21,6 @@ class SearchResultsViewController: UIViewController {
     // MARK: Public methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        output.onViewDidLoad()
     }
     
     override func loadView() {
@@ -32,17 +28,12 @@ class SearchResultsViewController: UIViewController {
         
         view = SearchResultsView(viewController: self)
     }
-}
-
-// MARK: - SearchResultsViewInput
-extension SearchResultsViewController: SearchResultsViewInput {
+    
     func showResults(_ results: [Event]) {
         self.results = results
         _view.reloadData()
     }
-    
 }
-
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSource {

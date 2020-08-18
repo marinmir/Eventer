@@ -18,7 +18,7 @@ struct Visitors: Codable {
         case visitorsCount
     }
     
-    // MARK: - Public Methods
+    // MARK: - Public methods
     init(images: [UIImage], count: Int) {
         profileImages = images
         visitorsCount = count

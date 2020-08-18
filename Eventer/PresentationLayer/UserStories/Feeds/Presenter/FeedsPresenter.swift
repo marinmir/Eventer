@@ -22,7 +22,6 @@ extension FeedsPresenter: FeedsInteractorOutput {
         DispatchQueue.main.async { [unowned self] in
             self.view.showSearchResults(results)
         }
-        
     }
     
     func didLoadEvents(_ events: [EventTypes: [Event]]) {

@@ -10,7 +10,6 @@ import UIKit
 
 class EventCardView: UIView {
     // MARK: - Properties
-    private var titleImage = UIImage(named: "EventDefault")
     private let titleImageView = UIImageView()
     private let dateView = DateView()
     private let title = UILabel()
@@ -29,9 +28,7 @@ class EventCardView: UIView {
     }
     
     func configure(_ event: Event) {
-        titleImage = event.titleImage
-        titleImageView.image = titleImage
-        
+        titleImageView.image = event.titleImage
         title.text = event.title
         
         let time = CustomDateFormatter.getTime(from: event.dateTime)

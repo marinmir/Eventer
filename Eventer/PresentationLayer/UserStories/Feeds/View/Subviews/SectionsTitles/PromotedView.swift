@@ -9,16 +9,13 @@
 import UIKit
 
 class PromotedView: UIView {
-    // MARK: - Properties
-    let title = UILabel()
-    let crownImage = UIImage(named: "Crown")
-    var crown: UIImageView!
-    
     // MARK: - Public methods
     init() {
         super.init(frame: CGRect.zero)
         
-        crown = UIImageView(image: crownImage)
+        let title = UILabel()
+        let crownImage = UIImage(named: "Crown")
+        let crown = UIImageView(image: crownImage)
         
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = NSLocalizedString("Promoted", comment: "")

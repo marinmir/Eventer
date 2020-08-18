@@ -14,12 +14,11 @@ import RxSwift
 class FeedsViewController: UIViewController {
     // MARK: - Properties
     var output: FeedsViewOutput!
-    //var results =
     
     private var events: [EventTypes:[Event]] = [.promoted:[], .popular:[], .thisWeek:[]]
     private var sectionsCount: Int = 0
     private var indicesMap: [Int: EventTypes] = [:]
-    private var searchResultsController: SearchResultsViewController = SearchResultsAssembly.createModule() as! SearchResultsViewController
+    private var searchResultsController = SearchResultsViewController()
     private let disposeBag = DisposeBag()
     
     private var _view: FeedsView {
@@ -60,7 +59,7 @@ class FeedsViewController: UIViewController {
     // MARK: - Private methods
     private func setupSearchController() {
         //searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = NSLocalizedString("Search for...", comment: "")
         searchController.searchBar.tintColor = Colors.darkViolet
 
@@ -69,7 +68,7 @@ class FeedsViewController: UIViewController {
             .orEmpty
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .subscribe(onNext: { [unowned self] query in // Here we will be notified of every new value
+            .subscribe(onNext: { [unowned self] query in 
                 self.output.getSearchResults(for: query)
             })
             .disposed(by: disposeBag)
@@ -86,6 +85,7 @@ class FeedsViewController: UIViewController {
         
         //searchController.searchBar.delegate = self
     }
+    
 }
 
 // MARK: - FeedsViewInput
@@ -98,7 +98,6 @@ extension FeedsViewController: FeedsViewInput {
         updateTableMetadata(events)
         
         _view.eventsList.reloadData()
-        
         _view.stopRefreshingIfNeeded()
     }
     
@@ -185,19 +184,13 @@ extension FeedsViewController: UITableViewDelegate, UITableViewDataSource {
             return CGFloat(250)
         }
     }
+    
 }
 
-//// MARK: - UISearchResultsUpdating
-//extension FeedsViewController: UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        //TODO
-//    }
-//
-//}
-//
 //// MARK: - UISearchBarDelegate
 //extension FeedsViewController: UISearchBarDelegate {
 //    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-//        print("bla")
+//        // TODO: open screen with filters
 //    }
+//
 //}

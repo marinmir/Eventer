@@ -9,13 +9,11 @@
 import UIKit
 
 class PopularView: UIView {
-    // MARK: - Properties
-    let title = UILabel()
-    
     // MARK: - Public methods
     init() {
         super.init(frame: CGRect.zero)
         
+        let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = NSLocalizedString("Popular", comment: "")
         title.font = .boldSystemFont(ofSize: TitlesConstants.font)

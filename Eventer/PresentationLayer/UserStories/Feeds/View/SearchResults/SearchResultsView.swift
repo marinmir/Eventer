@@ -52,8 +52,8 @@ class SearchResultsView: UIView {
         
         NSLayoutConstraint.activate([
             resultsList.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            resultsList.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            resultsList.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            resultsList.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            resultsList.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
             resultsList.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             
             notFoundView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
