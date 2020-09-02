@@ -16,9 +16,9 @@ class FeedsAssembly {
         let viewController = FeedsViewController()
         presenter.view = viewController
         presenter.router = router
-
-        let interactor = FeedsInteractor()
-        interactor.eventsLoader = EventsLoaderMock()
+        
+        let eventsLoader = EventsLoaderMock()
+        let interactor = FeedsInteractor(eventsLoader: eventsLoader)
         interactor.output = presenter
 
         presenter.interactor = interactor

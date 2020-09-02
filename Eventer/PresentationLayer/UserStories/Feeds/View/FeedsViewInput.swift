@@ -7,7 +7,7 @@
 //
 
 protocol FeedsViewInput: class {
-    func showEvents(_ events: [EventTypes: [Event]])
+    func showEvents(_ events: [EventType: [Event]])
     func showSearchResults(_ results: [Event])
     
 }

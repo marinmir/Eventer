@@ -8,5 +8,8 @@ target 'Eventer' do
   # Pods for Eventer
 pod 'RxSwift'
 pod 'RxCocoa'
+pod 'Firebase/Analytics'
 
+pod 'Firebase/Firestore'
+pod 'FirebaseFirestoreSwift'
 end

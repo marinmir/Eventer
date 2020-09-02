@@ -10,16 +10,21 @@ import UIKit
 
 class SearchResultsView: UIView {
     // MARK: - Properties
-    let resultsList = UITableView(frame: CGRect.zero, style: .plain)
+    let resultsList = UITableView(frame: .zero, style: .plain)
     private let notFoundView = SearchResultsNotFoundView()
-    private weak var vc: SearchResultsViewController?
+    weak var dataSource: UITableViewDataSource? {
+        didSet { resultsList.dataSource = dataSource }
+    }
+    
+    weak var delegate: UITableViewDelegate? {
+        didSet { resultsList.delegate = delegate }
+    }
+    
+    private let contentOffset: CGFloat = 15
     
     // MARK: - Public methods
-    init(viewController vc: SearchResultsViewController) {
-        self.vc = vc
-        
+    init() {
         super.init(frame: CGRect.zero)
-        
         setAppearance()
     }
     
@@ -35,14 +40,12 @@ class SearchResultsView: UIView {
     
     // MARK: - Private methods
     private func setAppearance() {
-        backgroundColor = Colors.white
+        backgroundColor = .white
         
         resultsList.translatesAutoresizingMaskIntoConstraints = false
-        resultsList.backgroundColor = Colors.white
+        resultsList.backgroundColor = .white
         resultsList.rowHeight = 100
         resultsList.separatorStyle = .none
-        resultsList.dataSource = vc
-        resultsList.delegate = vc
         resultsList.allowsSelection = false
         resultsList.register(SearchResultCell.self, forCellReuseIdentifier: SearchResultCell.cellReuseIdentifier)
         addSubview(resultsList)
@@ -52,8 +55,8 @@ class SearchResultsView: UIView {
         
         NSLayoutConstraint.activate([
             resultsList.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            resultsList.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            resultsList.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            resultsList.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: contentOffset),
+            resultsList.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -contentOffset),
             resultsList.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             
             notFoundView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),

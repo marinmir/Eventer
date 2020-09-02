@@ -15,23 +15,23 @@ struct Tag {
 }
 
 class Tags {
-    static let tags = [ Tag(image: UIImage(named: "Art") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedArt") ?? UIImage(),
+    static let tags = [ Tag(image: UIImage(named: "Art")!,
+                            selectedImage: UIImage(named: "SelectedArt")!,
                             name: NSLocalizedString("Art", comment: "")),
-                        Tag(image: UIImage(named: "Cinema") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedCinema") ?? UIImage(),
+                        Tag(image: UIImage(named: "Cinema")!,
+                            selectedImage: UIImage(named: "SelectedCinema")!,
                             name: NSLocalizedString("Cinema", comment: "")),
-                        Tag(image: UIImage(named: "Food") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedFood") ?? UIImage(),
+                        Tag(image: UIImage(named: "Food")!,
+                            selectedImage: UIImage(named: "SelectedFood")!,
                             name: NSLocalizedString("Food", comment: "")),
-                        Tag(image: UIImage(named: "Music") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedMusic") ?? UIImage(),
+                        Tag(image: UIImage(named: "Music")!,
+                            selectedImage: UIImage(named: "SelectedMusic")!,
                             name: NSLocalizedString("Music", comment: "")),
-                        Tag(image: UIImage(named: "Sport") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedSport") ?? UIImage(),
+                        Tag(image: UIImage(named: "Sport")!,
+                            selectedImage: UIImage(named: "SelectedSport")!,
                             name: NSLocalizedString("Sport", comment: "")),
-                        Tag(image: UIImage(named: "Society") ?? UIImage(),
-                            selectedImage: UIImage(named: "SelectedSociety") ?? UIImage(),
+                        Tag(image: UIImage(named: "Society")!,
+                            selectedImage: UIImage(named: "SelectedSociety")!,
                             name: NSLocalizedString("Society", comment: ""))]
 }
 

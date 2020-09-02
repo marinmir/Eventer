@@ -21,12 +21,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         
         delegate = self
-        tabBar.tintColor = Colors.darkViolet
-        tabBar.backgroundColor = Colors.white
-        tabBarController?.tabBar.barTintColor = Colors.white
+        tabBar.tintColor = .darkViolet
+        tabBar.backgroundColor = .white
+        tabBarController?.tabBar.barTintColor = .white
         UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().tintColor = Colors.white
-        UINavigationBar.appearance().backgroundColor = Colors.white
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) -> Void {

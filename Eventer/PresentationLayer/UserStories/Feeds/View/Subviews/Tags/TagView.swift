@@ -11,11 +11,16 @@ import UIKit
 
 class TagView: UIView {
     // MARK: - Properties
-    private var imgView = UIImageView()
-    private var image: UIImage!
-    private var selectedImage: UIImage!
-    private let name = UILabel()
-    private var isSelected: Bool = false
+    private var imageView = UIImageView()
+    private var image: UIImage?
+    private var selectedImage: UIImage?
+    private let nameLabel = UILabel()
+    private var isSelected: Bool = false {
+        didSet { isSelected ? setSelected() : setDeselected() }
+    }
+    
+    private let imageViewSide: CGFloat = 20
+    private let tagContentOffset: CGFloat = 16
     
     init() {
         super.init(frame: CGRect.zero)
@@ -30,56 +35,50 @@ class TagView: UIView {
     func configure(with tag: Tag) {
         image = tag.image
         selectedImage = tag.selectedImage
-        name.text = tag.name
+        nameLabel.text = tag.name
         
         setDeselected()
     }
     
     func toggle() {
-        if isSelected {
-            setDeselected()
-        } else {
-            setSelected()
-        }
-        
         isSelected.toggle()
     }
     
     // MARK: Private methods
     private func setAppearance() {
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(imgView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageView)
         
-        name.translatesAutoresizingMaskIntoConstraints = false
-        name.isUserInteractionEnabled = false
-        name.font = UIFont.boldSystemFont(ofSize: 20)
-        name.sizeToFit()
-        addSubview(name)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.isUserInteractionEnabled = false
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        nameLabel.sizeToFit()
+        addSubview(nameLabel)
         
         NSLayoutConstraint.activate([
-            imgView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imgView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            imgView.heightAnchor.constraint(equalToConstant: 20),
-            imgView.widthAnchor.constraint(equalToConstant: 20),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: tagContentOffset),
+            imageView.heightAnchor.constraint(equalToConstant: imageViewSide),
+            imageView.widthAnchor.constraint(equalToConstant: imageViewSide),
             
-            name.centerYAnchor.constraint(equalTo: centerYAnchor),
-            name.leadingAnchor.constraint(equalTo: imgView.trailingAnchor, constant: 10),
-            name.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            name.heightAnchor.constraint(equalToConstant: 28)
+            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
+            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -tagContentOffset),
+            nameLabel.heightAnchor.constraint(equalToConstant: 28)
         ])
         
     }
     
     private func setSelected() {
-        imgView.image = selectedImage
-        backgroundColor = Colors.darkViolet
-        name.textColor = Colors.white
+        imageView.image = selectedImage
+        backgroundColor = .darkViolet
+        nameLabel.textColor = .white
     }
     
     private func setDeselected() {
-        imgView.image = image
-        backgroundColor = Colors.lightLavender
-        name.textColor = Colors.darkViolet
+        imageView.image = image
+        backgroundColor = .lightLavender
+        nameLabel.textColor = .darkViolet
     }
     
 }

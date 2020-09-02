@@ -9,6 +9,11 @@
 import UIKit
 
 class SearchResultsNotFoundView: UIView {
+    // MARK: - Properties
+    private let contentOffset: CGFloat = 25
+    private let smileSide: CGFloat = 50
+    
+    // MARK: - Public methods
     init() {
         super.init(frame: CGRect.zero)
         
@@ -19,6 +24,7 @@ class SearchResultsNotFoundView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Private methods
     private func setSubviews() {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +33,7 @@ class SearchResultsNotFoundView: UIView {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.text = NSLocalizedString("Sorry, not found", comment: "")
-        message.textColor = Colors.darkViolet
+        message.textColor = .darkViolet
         message.font = .systemFont(ofSize: 25)
         addSubview(message)
         
@@ -41,13 +47,13 @@ class SearchResultsNotFoundView: UIView {
             container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             container.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             
-            message.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -25),
+            message.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -contentOffset),
             message.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            sadSmile.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 25),
+            sadSmile.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: contentOffset),
             sadSmile.centerXAnchor.constraint(equalTo: centerXAnchor),
-            sadSmile.widthAnchor.constraint(equalToConstant: 50),
-            sadSmile.heightAnchor.constraint(equalToConstant: 50),
+            sadSmile.widthAnchor.constraint(equalToConstant: smileSide),
+            sadSmile.heightAnchor.constraint(equalToConstant: smileSide),
         ])
     }
     

@@ -62,7 +62,7 @@ class Event: Codable {
         titleImage = UIImage(data: imgData!) ?? UIImage()
         
         let dateTimeString = try container.decode(String.self, forKey: .dateTime)
-        dateTime = CustomDateFormatter.toDate(from: dateTimeString)
+        dateTime = CustomDateFormatter.getEventDate(from: dateTimeString)
         
         visitors = try container.decode(Visitors.self, forKey: .visitors)
     }
@@ -75,7 +75,7 @@ class Event: Codable {
         try container.encode(place, forKey: .place)
         try container.encode(cost, forKey: .cost)
         try container.encode(description, forKey: .description)
-        try container.encode(CustomDateFormatter.toString(from: dateTime), forKey: .dateTime)
+        try container.encode(CustomDateFormatter.getEventDateString(from: dateTime), forKey: .dateTime)
         
         let imgData = titleImage?.pngData()
         try container.encode(imgData, forKey: .titleImage)

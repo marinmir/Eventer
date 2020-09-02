@@ -8,41 +8,42 @@
 
 import Foundation
 
-class CustomDateFormatter {
+enum CustomDateFormatter {
     // MARK: - Properties
-    static let dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "MMM d, h:mm a"
-        return df
-    }()
+    private static let dateFormatter = DateFormatter()
+    
+    private static var `default`: DateFormatter {
+        dateFormatter.dateFormat = "MMM d, h:mm a"
+        return dateFormatter
+    }
+    
+    private static var shortMonth: DateFormatter {
+        dateFormatter.dateFormat = "MMM";
+        return dateFormatter
+    }
+    
+    private static var time: DateFormatter {
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter
+    }
     
     // MARK: - Methods
-    static func toString(from date: Date) -> String {
-        return dateFormatter.string(from: date)
+    static func getEventDateString(from date: Date) -> String {
+        return CustomDateFormatter.default.string(from: date)
     }
     
-    static func toDate(from str: String) -> Date {
-        return dateFormatter.date(from: str) ?? Date()
+    static func getEventDate(from str: String) -> Date {
+        return CustomDateFormatter.default.date(from: str) ?? Date()
     }
-    
-//    static func getMonthName(from date: Date) -> String {
-//        let df = DateFormatter()
-//        df.dateFormat = "LLLL"
-//        return df.string(from: date)
-//    }
     
     static func getShortMonthName(from date: Date) -> String {
-        let df = DateFormatter()
-        df.dateFormat = "MMM"
-        return df.string(from: date)
+        return CustomDateFormatter.shortMonth.string(from: date)
     }
     
     static func getTime(from date: Date) -> String {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        let minutes = calendar.component(.minute, from: date)
-        
-        return "\(hour):\(minutes)"
+        return CustomDateFormatter.time.string(from: date)
     }
+    
+    
     
 }

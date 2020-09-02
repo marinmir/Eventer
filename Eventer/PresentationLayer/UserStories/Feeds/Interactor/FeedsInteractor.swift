@@ -6,26 +6,38 @@
 //  Copyright © 2020 marinmir. All rights reserved.
 //
 
+import Foundation
+
 class FeedsInteractor {
     // MARK: - Properties
     weak var output: FeedsInteractorOutput!
     
-    var eventsLoader: EventsLoader!
+    let eventsLoader: EventsLoader
+    
+    // MARK: - Public methods
+    init(eventsLoader: EventsLoader) {
+        self.eventsLoader = eventsLoader
+    }
+    
 }
 
 // MARK: - FeedsInteractirInput
 extension FeedsInteractor: FeedsInteractorInput {
     func getSearchResults(for searchText: String) {
-        eventsLoader.loadSearchResults(searchText: searchText) { [weak self] results in
-            guard let self = self else { return }
-            self.output.showSearchResults(with: results)
+        eventsLoader.loadSearchResults(searchText: searchText) { results in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.output.didLoadSearchResults(with: results)
+            }
         }
     }
     
     func loadEvents() {
-        eventsLoader.loadEvents { [weak self] events in
-            guard let self = self else { return }
-            self.output.didLoadEvents(events)
+        eventsLoader.loadEvents { events in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.output.didLoadEvents(events)
+            }
         }
     }
     

@@ -10,22 +10,25 @@ import UIKit
 
 class VisitorsPreview: UIStackView {
     // MARK: - Properties
-    private let count = UILabel()
-    private var profileImages: [UIImage]!
+    private let countLabel = UILabel()
+    private var profileImages: [UIImage] = []
     private let profilesStack = UIStackView()
+    private let profileImageSide: CGFloat = 28
     
     // MARK: - Public methods
     func configure(visitors: Visitors) {
         profileImages = visitors.profileImages
         
         if visitors.visitorsCount > 0 {
-           count.text = "+\(visitors.visitorsCount)"
+           countLabel.text = "+\(visitors.visitorsCount)"
         }
         
         cleanStackView()
        
-        for img in 0..<min(4, profileImages.count) {
-            let profileImageView = UIImageView(image: profileImages[img])
+        let maxImagesCount = 4
+
+        profileImages.prefix(maxImagesCount).forEach { image in
+            let profileImageView = UIImageView(image: image)
             profileImageView.translatesAutoresizingMaskIntoConstraints = false
             profilesStack.addArrangedSubview(profileImageView)
             
@@ -33,11 +36,11 @@ class VisitorsPreview: UIStackView {
             profileImageView.layer.masksToBounds = true
             
             profileImageView.layer.borderWidth = 2
-            profileImageView.layer.borderColor = Colors.white.cgColor
+            profileImageView.layer.borderColor = UIColor.white.cgColor
             
             NSLayoutConstraint.activate([
-                profileImageView.widthAnchor.constraint(equalToConstant: 28),
-                profileImageView.heightAnchor.constraint(equalToConstant: 28)
+                profileImageView.widthAnchor.constraint(equalToConstant: profileImageSide),
+                profileImageView.heightAnchor.constraint(equalToConstant: profileImageSide)
             ])
         }
         
@@ -50,19 +53,18 @@ class VisitorsPreview: UIStackView {
         profilesStack.alignment = .center
         addArrangedSubview(profilesStack)
         
-        count.translatesAutoresizingMaskIntoConstraints = false
-        count.textColor = Colors.black
-        count.textAlignment = .left
-        count.font = .systemFont(ofSize: 10)
-        addArrangedSubview(count)
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countLabel.textColor = .black
+        countLabel.textAlignment = .left
+        countLabel.font = .systemFont(ofSize: 10)
+        addArrangedSubview(countLabel)
     }
     
     // MARK: - Private methods
     func cleanStackView() {
         let viewsInStack = profilesStack.arrangedSubviews
         
-        for view in viewsInStack {
-           profilesStack.removeArrangedSubview(view)
+        viewsInStack.forEach { view in
             view.removeFromSuperview()
         }
     }

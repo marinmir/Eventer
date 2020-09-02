@@ -15,9 +15,9 @@ class FeedsViewController: UIViewController {
     // MARK: - Properties
     var output: FeedsViewOutput!
     
-    private var events: [EventTypes:[Event]] = [.promoted:[], .popular:[], .thisWeek:[]]
-    private var sectionsCount: Int = 0
-    private var indicesMap: [Int: EventTypes] = [:]
+    private var eventsGroups: [EventType: [Event]] = [:]
+    private var sectionsCount: Int { eventsGroups.count + 1 }
+    private var indicesMap: [Int: EventType] = [:]
     private var searchResultsController = SearchResultsViewController()
     private let disposeBag = DisposeBag()
     
@@ -27,14 +27,13 @@ class FeedsViewController: UIViewController {
         }
     }
     
-    private var searchController: UISearchController! = nil
+    private lazy var searchController: UISearchController = UISearchController(searchResultsController: searchResultsController)
     
     // MARK: - Public Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
-        searchController = UISearchController(searchResultsController: searchResultsController)
         setupSearchController()
         setupFilter()
         
@@ -45,7 +44,9 @@ class FeedsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        view = FeedsView(viewController: self)
+        let feedsView = FeedsView()
+        feedsView.output = self
+        view = feedsView
     }
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
@@ -61,7 +62,7 @@ class FeedsViewController: UIViewController {
         //searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = NSLocalizedString("Search for...", comment: "")
-        searchController.searchBar.tintColor = Colors.darkViolet
+        searchController.searchBar.tintColor = .darkViolet
 
         searchController.searchBar.rx
             .text
@@ -69,7 +70,7 @@ class FeedsViewController: UIViewController {
             .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [unowned self] query in 
-                self.output.getSearchResults(for: query)
+                self.output.onSearchQueryChanged(for: query)
             })
             .disposed(by: disposeBag)
         
@@ -94,18 +95,15 @@ extension FeedsViewController: FeedsViewInput {
         searchResultsController.showResults(results)
     }
     
-    func showEvents(_ events: [EventTypes:[Event]]) {
+    func showEvents(_ events: [EventType:[Event]]) {
         updateTableMetadata(events)
         
         _view.eventsList.reloadData()
         _view.stopRefreshingIfNeeded()
     }
     
-    private func updateTableMetadata(_ events: [EventTypes:[Event]]) {
-        self.events = events
-        
-        sectionsCount = 1 // at least 1 for tags
-        sectionsCount += events.count
+    private func updateTableMetadata(_ events: [EventType: [Event]]) {
+        eventsGroups = events
         
         if (events[.promoted] != nil) {
             indicesMap[1] = .promoted
@@ -154,7 +152,7 @@ extension FeedsViewController: UITableViewDelegate, UITableViewDataSource {
                 fatalError("Unable to dequeue cell with identifier \(EventListCell.cellReuseIdentifier)")
             }
             
-            if let categoryEvents = events[indicesMap[indexPath.section]!] {
+            if let categoryEvents = eventsGroups[indicesMap[indexPath.section]!] {
                 cell.configure(with: categoryEvents)
             }
             
@@ -166,11 +164,11 @@ extension FeedsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch indicesMap[section] {
         case .promoted:
-            return PromotedView()
+            return FeedsSectionHeaderView(title: "Promoted", image: UIImage(named: "Crown"))
         case .popular:
-            return PopularView()
+            return FeedsSectionHeaderView(title: "Popular")
         case .thisWeek:
-            return ThisWeekView()
+            return FeedsSectionHeaderView(title: "This week")
         default:
             return nil
         }
@@ -194,3 +192,11 @@ extension FeedsViewController: UITableViewDelegate, UITableViewDataSource {
 //    }
 //
 //}
+
+// MARK: - FeedsRepreswntingOutput
+extension FeedsViewController: FeedsRepresentingOutput {
+    func onRefresh() {
+        output.onRefreshFeeds()
+    }
+    
+}

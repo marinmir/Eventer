@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol FeedsInteractorOutput: class {
-    func didLoadEvents(_ events: [EventTypes: [Event]])
-    func showSearchResults(with results: [Event])
+protocol FeedsInteractorOutput: AnyObject {
+    func didLoadEvents(_ events: [EventType: [Event]])
+    func didLoadSearchResults(with results: [Event])
     
 }

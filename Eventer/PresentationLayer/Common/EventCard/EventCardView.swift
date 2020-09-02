@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class EventCardView: UIView {
     // MARK: - Properties
     private let titleImageView = UIImageView()
     private let dateView = DateView()
-    private let title = UILabel()
-    private let place = UILabel()
+    private let titleLabel = UILabel()
+    private let placeLabel = UILabel()
     private let visitorsPreview = VisitorsPreview()
-    private let like = UIButton()
+    private let likeButton = UIButton()
+    
+    private let likeButtonSide: CGFloat = 35
+    private let disposeBag = DisposeBag()
+    private let sideOffset: CGFloat = 10
+    private let likeButtonContentInsets: CGFloat = 5
     
     // MARK: - Public methods
     init() {
@@ -29,10 +36,10 @@ class EventCardView: UIView {
     
     func configure(_ event: Event) {
         titleImageView.image = event.titleImage
-        title.text = event.title
+        titleLabel.text = event.title
         
         let time = CustomDateFormatter.getTime(from: event.dateTime)
-        place.text = "\(event.place), \(time)"
+        placeLabel.text = "\(event.place), \(time)"
         
         dateView.configure(dateTime: event.dateTime)
         
@@ -42,7 +49,7 @@ class EventCardView: UIView {
     // MARK: - Private methods
     private func setAppearance() {
         layer.cornerRadius = 20
-        backgroundColor = Colors.white
+        backgroundColor = .white
         
         titleImageView.translatesAutoresizingMaskIntoConstraints = false
         titleImageView.clipsToBounds = true
@@ -53,72 +60,80 @@ class EventCardView: UIView {
         bringSubviewToFront(dateView)
         addSubview(dateView)
         
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.numberOfLines = 1
-        title.lineBreakMode = .byTruncatingTail
-        title.font = .boldSystemFont(ofSize: 16)
-        title.textAlignment = .left
-        addSubview(title)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 1
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.font = .boldSystemFont(ofSize: 16)
+        titleLabel.textAlignment = .left
+        addSubview(titleLabel)
         
-        place.translatesAutoresizingMaskIntoConstraints = false
-        place.numberOfLines = 1
-        place.lineBreakMode = .byTruncatingTail
-        place.font = .systemFont(ofSize: 14)
-        place.textAlignment = .left
-        place.textColor = Colors.gray
-        addSubview(place)
+        placeLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeLabel.numberOfLines = 1
+        placeLabel.lineBreakMode = .byTruncatingTail
+        placeLabel.font = .systemFont(ofSize: 14)
+        placeLabel.textAlignment = .left
+        placeLabel.textColor = .gray
+        addSubview(placeLabel)
         
         visitorsPreview.translatesAutoresizingMaskIntoConstraints = false
         addSubview(visitorsPreview)
         
-        like.translatesAutoresizingMaskIntoConstraints = false
-        like.setImage(UIImage(named: "LikeButton"), for: .normal)
-        like.setImage(UIImage(named: "SelectedLikeButton"), for: .selected)
-        like.isUserInteractionEnabled = true
-        like.layer.cornerRadius = 35/2
-        like.addTarget(self, action: #selector(self.didTapLike), for: .touchUpInside)
-        like.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        addSubview(like)
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.setImage(UIImage(named: "LikeButton"), for: .normal)
+        likeButton.setImage(UIImage(named: "SelectedLikeButton"), for: .selected)
+        likeButton.isUserInteractionEnabled = true
+        likeButton.layer.cornerRadius = likeButtonSide/2
+        likeButton.rx.tap
+            .asDriver()
+            .debounce(.milliseconds(200))
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.didTapLike()})
+            .disposed(by: disposeBag)
+        likeButton.contentEdgeInsets = UIEdgeInsets(top: likeButtonContentInsets,
+                                              left: likeButtonContentInsets,
+                                              bottom: likeButtonContentInsets,
+                                              right: likeButtonContentInsets)
+        addSubview(likeButton)
         
         NSLayoutConstraint.activate([
             titleImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             titleImageView.topAnchor.constraint(equalTo: topAnchor),
-            titleImageView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: 10),
+            titleImageView.bottomAnchor.constraint(equalTo: centerYAnchor, constant: sideOffset),
             
-            dateView.centerYAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: -10),
+            dateView.centerYAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: -sideOffset),
             dateView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             
-            title.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: 8),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            title.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            title.heightAnchor.constraint(equalToConstant: 20),
+            titleLabel.topAnchor.constraint(equalTo: dateView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: sideOffset),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -sideOffset),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
             
-            place.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
-            place.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            place.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            place.heightAnchor.constraint(equalToConstant: 15),
+            placeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            placeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: sideOffset),
+            placeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -sideOffset),
+            placeLabel.heightAnchor.constraint(equalToConstant: 15),
             
-            visitorsPreview.topAnchor.constraint(equalTo: place.bottomAnchor, constant: 4),
-            visitorsPreview.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            visitorsPreview.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: 4),
+            visitorsPreview.leadingAnchor.constraint(equalTo: leadingAnchor, constant: sideOffset),
             visitorsPreview.trailingAnchor.constraint(equalTo: centerXAnchor),
-            visitorsPreview.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            visitorsPreview.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -sideOffset),
             
-            like.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            like.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            like.widthAnchor.constraint(equalToConstant: 35),
-            like.heightAnchor.constraint(equalToConstant: 35),
+            likeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -sideOffset),
+            likeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -sideOffset),
+            likeButton.widthAnchor.constraint(equalToConstant: likeButtonSide),
+            likeButton.heightAnchor.constraint(equalToConstant: likeButtonSide),
         ])
     }
     
-    @objc
     private func didTapLike() {
-        like.isSelected.toggle()
+        likeButton.isSelected.toggle()
         
-        UIView.animate(withDuration: 0.5, animations: {
-            self.like.backgroundColor = Colors.lightLavender
-            self.like.backgroundColor = .clear
-        })
+        UIView.animate(withDuration: 0.5) {
+            self.likeButton.backgroundColor = .lightLavender
+            self.likeButton.backgroundColor = .clear
+        }
     }
     
 }

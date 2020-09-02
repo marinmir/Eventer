@@ -11,11 +11,13 @@ import UIKit
 class SearchResultCell: UITableViewCell {
     // MARK: - Properties
     static let cellReuseIdentifier = String(describing: SearchResultCell.self)
-    private let titleImage = UIImageView()
-    private let title = UILabel()
-    private let date = UILabel()
-    private let place = UILabel()
-    private let cost = UILabel()
+    private let titleImageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let dateLabel = UILabel()
+    private let placeLabel = UILabel()
+    private let costLabel = UILabel()
+    
+    private let titleImageSide: CGFloat = 90
     
     // MARK: - Public methods
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -29,77 +31,77 @@ class SearchResultCell: UITableViewCell {
     }
     
     func configure(with result: Event) {
-        titleImage.image = result.titleImage
-        title.text = result.title
-        date.text = CustomDateFormatter.toString(from: result.dateTime)
-        place.text = result.place
-        cost.text = String(result.cost)
+        titleImageView.image = result.titleImage
+        titleLabel.text = result.title
+        dateLabel.text = CustomDateFormatter.getEventDateString(from: result.dateTime)
+        placeLabel.text = result.place
+        costLabel.text = String(result.cost)
     }
     
     // MARK: - Private methods
     private func setAppearance() {
-        titleImage.translatesAutoresizingMaskIntoConstraints = false
-        titleImage.clipsToBounds = true
-        titleImage.contentMode = .scaleAspectFill
-        titleImage.layer.cornerRadius = 45
-        contentView.addSubview(titleImage)
+        titleImageView.translatesAutoresizingMaskIntoConstraints = false
+        titleImageView.clipsToBounds = true
+        titleImageView.contentMode = .scaleAspectFill
+        titleImageView.layer.cornerRadius = titleImageSide/2
+        contentView.addSubview(titleImageView)
         
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.numberOfLines = 1
-        title.lineBreakMode = .byTruncatingTail
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textAlignment = .left
-        contentView.addSubview(title)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 1
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.font = .boldSystemFont(ofSize: 20)
+        titleLabel.textAlignment = .left
+        contentView.addSubview(titleLabel)
         
-        date.translatesAutoresizingMaskIntoConstraints = false
-        date.numberOfLines = 1
-        date.lineBreakMode = .byTruncatingTail
-        date.font = .systemFont(ofSize: 16)
-        date.textAlignment = .left
-        date.textColor = Colors.gray
-        contentView.addSubview(date)
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.numberOfLines = 1
+        dateLabel.lineBreakMode = .byTruncatingTail
+        dateLabel.font = .systemFont(ofSize: 16)
+        dateLabel.textAlignment = .left
+        dateLabel.textColor = .gray
+        contentView.addSubview(dateLabel)
         
-        place.translatesAutoresizingMaskIntoConstraints = false
-        place.numberOfLines = 1
-        place.lineBreakMode = .byTruncatingTail
-        place.font = .systemFont(ofSize: 16)
-        place.textAlignment = .left
-        place.textColor = Colors.gray
-        contentView.addSubview(place)
+        placeLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeLabel.numberOfLines = 1
+        placeLabel.lineBreakMode = .byTruncatingTail
+        placeLabel.font = .systemFont(ofSize: 16)
+        placeLabel.textAlignment = .left
+        placeLabel.textColor = .gray
+        contentView.addSubview(placeLabel)
         
-        cost.translatesAutoresizingMaskIntoConstraints = false
-        cost.numberOfLines = 1
-        cost.lineBreakMode = .byTruncatingTail
-        cost.font = .systemFont(ofSize: 16)
-        cost.textAlignment = .left
-        cost.textColor = Colors.gray
-        contentView.addSubview(cost)
+        costLabel.translatesAutoresizingMaskIntoConstraints = false
+        costLabel.numberOfLines = 1
+        costLabel.lineBreakMode = .byTruncatingTail
+        costLabel.font = .systemFont(ofSize: 16)
+        costLabel.textAlignment = .left
+        costLabel.textColor = .gray
+        contentView.addSubview(costLabel)
         
         NSLayoutConstraint.activate([
-            titleImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleImage.heightAnchor.constraint(equalToConstant: 90),
-            titleImage.widthAnchor.constraint(equalToConstant: 90),
+            titleImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            titleImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            titleImageView.heightAnchor.constraint(equalToConstant: titleImageSide),
+            titleImageView.widthAnchor.constraint(equalToConstant: titleImageSide),
             
-            title.leadingAnchor.constraint(equalTo: titleImage.trailingAnchor, constant: 8),
-            title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            title.centerYAnchor.constraint(equalTo: titleImage.centerYAnchor, constant: -20),
-            title.heightAnchor.constraint(equalToConstant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: titleImageView.trailingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: titleImageView.centerYAnchor, constant: -20),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
             
-            cost.leadingAnchor.constraint(equalTo: titleImage.trailingAnchor, constant: 8),
-            cost.centerYAnchor.constraint(equalTo: titleImage.centerYAnchor),
-            cost.heightAnchor.constraint(equalToConstant: 18),
-            cost.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            costLabel.leadingAnchor.constraint(equalTo: titleImageView.trailingAnchor, constant: 8),
+            costLabel.centerYAnchor.constraint(equalTo: titleImageView.centerYAnchor),
+            costLabel.heightAnchor.constraint(equalToConstant: 18),
+            costLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
             
-            place.leadingAnchor.constraint(equalTo: cost.trailingAnchor, constant: 2),
-            place.centerYAnchor.constraint(equalTo: cost.centerYAnchor),
-            place.heightAnchor.constraint(equalToConstant: 18),
-            place.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
+            placeLabel.leadingAnchor.constraint(equalTo: costLabel.trailingAnchor, constant: 2),
+            placeLabel.centerYAnchor.constraint(equalTo: costLabel.centerYAnchor),
+            placeLabel.heightAnchor.constraint(equalToConstant: 18),
+            placeLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
             
-            date.leadingAnchor.constraint(equalTo: titleImage.trailingAnchor, constant: 8),
-            date.centerYAnchor.constraint(equalTo: titleImage.centerYAnchor, constant: 18),
-            date.heightAnchor.constraint(equalToConstant: 18),
-            date.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: titleImageView.trailingAnchor, constant: 8),
+            dateLabel.centerYAnchor.constraint(equalTo: titleImageView.centerYAnchor, constant: 18),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18),
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
     

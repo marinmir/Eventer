@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum EventTypes {
+enum EventType {
     case promoted
     case popular
     case thisWeek

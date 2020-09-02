@@ -19,8 +19,10 @@ class TagsCell: UITableViewCell {
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        return UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
+    
+    private let tagContentAdditionalSpace: CGFloat = 63
     
     // MARK: - Public methods
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -38,7 +40,7 @@ class TagsCell: UITableViewCell {
         tagsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         tagsCollectionView.delegate = self
         tagsCollectionView.dataSource = self
-        tagsCollectionView.backgroundColor = Colors.white
+        tagsCollectionView.backgroundColor = .white
         tagsCollectionView.register(TagCollectionCell.self, forCellWithReuseIdentifier: TagCollectionCell.cellReuseIdentifier)
         contentView.addSubview(tagsCollectionView)
         
@@ -77,12 +79,14 @@ extension TagsCell: UICollectionViewDelegate, UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension TagsCell: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = tags[indexPath.row]
         let itemSize = item.name.size(withAttributes: [
-            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 20)
+            .font : UIFont.boldSystemFont(ofSize: 20)
         ])
-        let size =  CGSize(width: itemSize.width + 63, height: itemSize.height + 20)
+        let size =  CGSize(width: itemSize.width + tagContentAdditionalSpace, height: itemSize.height + 20)
         return size
     }
     

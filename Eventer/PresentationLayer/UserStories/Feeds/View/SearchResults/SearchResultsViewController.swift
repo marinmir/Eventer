@@ -26,7 +26,11 @@ class SearchResultsViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        view = SearchResultsView(viewController: self)
+        let resultsView = SearchResultsView()
+        resultsView.delegate = self
+        resultsView.dataSource = self
+        
+        view = resultsView
     }
     
     func showResults(_ results: [Event]) {
@@ -37,10 +41,6 @@ class SearchResultsViewController: UIViewController {
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return results.count
     }

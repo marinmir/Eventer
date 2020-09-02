@@ -12,6 +12,8 @@ class EventCollectionCell: UICollectionViewCell {
     // MARK: - Properties
     static let cellReuseIdentifier = String(describing: EventCollectionCell.self)
     private let eventCard = EventCardView()
+    
+    private let shadowOffset = 5
 
     // MARK: - Public methods
     override init(frame: CGRect) {
@@ -29,10 +31,10 @@ class EventCollectionCell: UICollectionViewCell {
     
     // MARK: - Private methods
     private func setApperance() {
-        layer.shadowColor = UIColor(red: 120/256, green: 120/256, blue: 120/256, alpha: 1).cgColor
+        layer.shadowColor = UIColor.shadow.cgColor
         layer.shadowRadius = 5
         layer.shadowOpacity = 0.2
-        layer.shadowOffset = CGSize(width: 5, height: 5)
+        layer.shadowOffset = CGSize(width: shadowOffset, height: shadowOffset)
         layer.masksToBounds = false
         
         eventCard.translatesAutoresizingMaskIntoConstraints = false

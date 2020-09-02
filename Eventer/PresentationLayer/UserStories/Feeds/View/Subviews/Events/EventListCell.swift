@@ -20,7 +20,7 @@ class EventListCell: UITableViewCell {
         layout.minimumLineSpacing = 16
         layout.itemSize = CGSize(width: 260, height: 230)
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        return UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
     
     // MARK: - Public methods
@@ -44,7 +44,7 @@ class EventListCell: UITableViewCell {
         eventsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         eventsCollectionView.delegate = self
         eventsCollectionView.dataSource = self
-        eventsCollectionView.backgroundColor = Colors.white
+        eventsCollectionView.backgroundColor = .white
         eventsCollectionView.register(EventCollectionCell.self, forCellWithReuseIdentifier: EventCollectionCell.cellReuseIdentifier)
         contentView.addSubview(eventsCollectionView)
         

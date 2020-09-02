@@ -18,39 +18,28 @@ class FeedsPresenter {
 
 // MARK: - FeedsInteractorOutput
 extension FeedsPresenter: FeedsInteractorOutput {
-    func showSearchResults(with results: [Event]) {
-        DispatchQueue.main.async { [unowned self] in
-            self.view.showSearchResults(results)
-        }
+    func didLoadSearchResults(with results: [Event]) {
+        view.showSearchResults(results)
     }
     
-    func didLoadEvents(_ events: [EventTypes: [Event]]) {
-        DispatchQueue.main.async {
-            self.view.showEvents(events)
-        }
+    func didLoadEvents(_ events: [EventType: [Event]]) {
+        view.showEvents(events)
     }
     
 }
 
 // MARK: - FeedsViewOutput
 extension FeedsPresenter: FeedsViewOutput {
-    func getSearchResults(for searchText: String) {
-        DispatchQueue.global(qos: .background).async {
-            self.interactor.getSearchResults(for: searchText)
-        }
+    func onSearchQueryChanged(for searchText: String) {
+        interactor.getSearchResults(for: searchText)
     }
     
-    func fetchEvents() {
-        DispatchQueue.global(qos: .background).async {
-            self.interactor.loadEvents()
-        }
+    func onRefreshFeeds() {
+        interactor.loadEvents()
     }
     
-	func onViewDidLoad() {
-        DispatchQueue.global(qos: .background).async {
-            self.interactor.loadEvents()
-        }
+    func onViewDidLoad() {
+        interactor.loadEvents()
     }
-    
     
 }

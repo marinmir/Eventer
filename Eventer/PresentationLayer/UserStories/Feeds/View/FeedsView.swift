@@ -10,16 +10,19 @@ import UIKit
 
 class FeedsView: UIView {
     // MARK: - Properties
-    let eventsList = UITableView(frame: CGRect.zero, style: .grouped)
-    private weak var vc: FeedsViewController?
+    weak var output: FeedsRepresentingOutput? {
+        didSet {
+            eventsList.dataSource = output
+            eventsList.delegate = output
+        }
+    }
+
+    let eventsList = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
     
     // MARK: - Public methods
-    init(viewController vc: FeedsViewController) {
-        self.vc = vc
-        
-        super.init(frame: CGRect.zero)
-        
+    init() {
+        super.init(frame: .zero)
         setAppearance()
     }
     
@@ -35,18 +38,17 @@ class FeedsView: UIView {
     
     // MARK: - Private methods
     private func setAppearance() {
-        backgroundColor = Colors.white
+        backgroundColor = .white
         
         eventsList.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refreshEvents), for: .valueChanged)
-        refreshControl.tintColor = Colors.lightLavender
-        refreshControl.attributedTitle = NSAttributedString(string: "Getting new events...", attributes: [NSAttributedString.Key.foregroundColor: Colors.darkViolet])
+        refreshControl.tintColor = .lightLavender
+        refreshControl.attributedTitle = NSAttributedString(string: "Getting new events...",
+                                                            attributes: [.foregroundColor: UIColor.darkViolet])
         
         eventsList.translatesAutoresizingMaskIntoConstraints = false
-        eventsList.backgroundColor = Colors.white
+        eventsList.backgroundColor = .white
         eventsList.separatorStyle = .none
-        eventsList.dataSource = vc
-        eventsList.delegate = vc
         eventsList.allowsSelection = false
         eventsList.register(EventListCell.self, forCellReuseIdentifier: EventListCell.cellReuseIdentifier)
         eventsList.register(TagsCell.self, forCellReuseIdentifier: TagsCell.cellReuseIdentifier)
@@ -62,7 +64,7 @@ class FeedsView: UIView {
     
     // MARK: - Private methods
     @objc private func refreshEvents() {
-        vc?.output.fetchEvents()
+        output?.onRefresh()
     }
     
 }

@@ -8,7 +8,7 @@
 
 protocol FeedsViewOutput {
     func onViewDidLoad()
-    func fetchEvents()
-    func getSearchResults(for searchText: String)
+    func onRefreshFeeds()
+    func onSearchQueryChanged(for searchText: String)
     
 }
