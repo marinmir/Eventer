@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,9 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let myScene = (scene as? UIWindowScene) else { return }
         
+        FirebaseApp.configure()
+        
         window = UIWindow(windowScene: myScene)
         window?.rootViewController = MainViewController()
         window?.makeKeyAndVisible()
+        
 //        if Auth.auth().currentUser != nil {
 //            window?.rootViewController = MainRouter.createModule()
 //        }

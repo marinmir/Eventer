@@ -17,7 +17,7 @@ class FeedsAssembly {
         presenter.view = viewController
         presenter.router = router
         
-        let eventsLoader = EventsLoaderMock()
+        let eventsLoader = FirebaseEventsLoader()
         let interactor = FeedsInteractor(eventsLoader: eventsLoader)
         interactor.output = presenter
 

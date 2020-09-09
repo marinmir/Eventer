@@ -11,13 +11,13 @@ import UIKit
 class VisitorsPreview: UIStackView {
     // MARK: - Properties
     private let countLabel = UILabel()
-    private var profileImages: [UIImage] = []
+    private var profileImagesURLs: [String] = []
     private let profilesStack = UIStackView()
     private let profileImageSide: CGFloat = 28
     
     // MARK: - Public methods
     func configure(visitors: Visitors) {
-        profileImages = visitors.profileImages
+        profileImagesURLs = visitors.profileImages
         
         if visitors.visitorsCount > 0 {
            countLabel.text = "+\(visitors.visitorsCount)"
@@ -27,8 +27,9 @@ class VisitorsPreview: UIStackView {
        
         let maxImagesCount = 4
 
-        profileImages.prefix(maxImagesCount).forEach { image in
-            let profileImageView = UIImageView(image: image)
+        profileImagesURLs.prefix(maxImagesCount).forEach { url in
+            let profileImageView = UIImageView()
+            profileImageView.loadImage(url: url)
             profileImageView.translatesAutoresizingMaskIntoConstraints = false
             profilesStack.addArrangedSubview(profileImageView)
             

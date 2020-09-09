@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum EventType {
-    case promoted
+enum EventType: String, Codable {
     case popular
+    case promoted
     case thisWeek
 }

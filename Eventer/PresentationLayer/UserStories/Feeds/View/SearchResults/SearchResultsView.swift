@@ -24,7 +24,7 @@ class SearchResultsView: UIView {
     
     // MARK: - Public methods
     init() {
-        super.init(frame: CGRect.zero)
+        super.init(frame: .zero)
         setAppearance()
     }
     

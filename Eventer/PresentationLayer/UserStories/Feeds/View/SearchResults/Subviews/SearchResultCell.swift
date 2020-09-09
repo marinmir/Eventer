@@ -31,7 +31,7 @@ class SearchResultCell: UITableViewCell {
     }
     
     func configure(with result: Event) {
-        titleImageView.image = result.titleImage
+        //titleImageView.image = result.titleImage
         titleLabel.text = result.title
         dateLabel.text = CustomDateFormatter.getEventDateString(from: result.dateTime)
         placeLabel.text = result.place

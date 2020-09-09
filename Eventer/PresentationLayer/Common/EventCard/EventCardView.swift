@@ -35,7 +35,8 @@ class EventCardView: UIView {
     }
     
     func configure(_ event: Event) {
-        titleImageView.image = event.titleImage
+        titleImageView.loadImage(url: event.titleImage)
+        
         titleLabel.text = event.title
         
         let time = CustomDateFormatter.getTime(from: event.dateTime)
